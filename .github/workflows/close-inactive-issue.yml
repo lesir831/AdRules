@@ -5,6 +5,7 @@ on:
   workflow_dispatch:
 jobs:
   close-issues:
+    if: github.repository == 'Cats-Team/AdRules'
     runs-on: ubuntu-latest
     permissions:
       issues: write

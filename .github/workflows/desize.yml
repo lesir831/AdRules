@@ -4,6 +4,7 @@ on:
 
 jobs:
   clean:
+    if: github.repository == 'Cats-Team/AdRules'
     runs-on: ubuntu-latest
       
     steps:

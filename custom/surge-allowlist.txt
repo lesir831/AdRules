@@ -1,0 +1,4 @@
+# Exact hostnames only. Subdomains and sibling hosts remain blocked.
+# Reward-video and points requests observed during Douyin Mall playback testing.
+ad.zijieapi.com
+polaris5-normal-hl.zijieapi.com

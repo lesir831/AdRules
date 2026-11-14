@@ -11,6 +11,17 @@
 
 </centre>
 
+## Fork: filtered Surge rules
+
+This fork publishes an automatically refreshed Surge rule-set with exact-host exceptions to the [`filtered` branch](https://github.com/lesir831/AdRules/tree/filtered).
+
+- Subscription: `https://raw.githubusercontent.com/lesir831/AdRules/filtered/adrules-surge.conf`
+- Exceptions: [`custom/surge-allowlist.txt`](custom/surge-allowlist.txt)
+- Automation: [Filter Surge Rules](https://github.com/lesir831/AdRules/actions/workflows/filter-surge.yml), every six hours and after allowlist changes.
+- Details: [`custom/README-output.md`](custom/README-output.md)
+
+The original build, force-push cleanup, external mirroring, Pages deployment, and issue-maintenance jobs are guarded to run only in the upstream repository, not this fork. Upstream rules are consumed as data; upstream build scripts are not run.
+
 ## Desc.
 List for blocking ads in the Chinese region
 Block Ads, Trackers, Malware, HTTPDNS, PCDN.

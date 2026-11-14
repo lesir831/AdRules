@@ -1,0 +1,91 @@
+name: Filter Surge Rules
+
+on:
+  schedule:
+    - cron: '23 */6 * * *'
+  workflow_dispatch:
+  push:
+    branches: [script]
+    paths:
+      - 'custom/**'
+      - 'tests/test_filter_surge.py'
+      - '.github/workflows/filter-surge.yml'
+      - 'Source.md'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: filtered-surge-rules
+  cancel-in-progress: false
+
+jobs:
+  filter:
+    if: github.repository != 'Cats-Team/AdRules'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - name: Check out filter code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+
+      - name: Run exact-host regression tests
+        run: python3 -I -m unittest discover -s tests -p test_filter_surge.py -v
+
+      - name: Read upstream generated rules (never execute upstream code)
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          repository: Cats-Team/AdRules
+          ref: main
+          path: upstream-output
+          persist-credentials: false
+          sparse-checkout: adrules-surge.conf
+          sparse-checkout-cone-mode: false
+
+      - name: Filter and validate output
+        shell: bash
+        run: |
+          set -euo pipefail
+          build="$RUNNER_TEMP/filtered-surge-build"
+          mkdir -p "$build"
+          python3 -I custom/filter_surge.py \
+            --input upstream-output/adrules-surge.conf \
+            --allowlist custom/surge-allowlist.txt \
+            --output "$build/adrules-surge.conf" \
+            --manifest "$build/manifest.json" \
+            --upstream-sha "$(git -C upstream-output rev-parse HEAD)" \
+            --source-sha "$(git rev-parse HEAD)"
+          cp custom/README-output.md "$build/README.md"
+          cp Source.md "$build/Source.md"
+          {
+            printf '### Filtered Surge rules\n\n'
+            printf 'Only exact allowlisted hosts are exempted. Siblings and subdomains remain blocked.\n\n'
+            printf '```json\n'
+            cat "$build/manifest.json"
+            printf '\n```\n'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Publish only validated files to filtered branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          build="$RUNNER_TEMP/filtered-surge-build"
+          if git show-ref --verify --quiet refs/remotes/origin/filtered; then
+            git switch -c filtered origin/filtered
+          else
+            git switch --orphan filtered
+          fi
+          cp "$build/adrules-surge.conf" "$build/manifest.json" "$build/Source.md" "$build/README.md" .
+          git add -- adrules-surge.conf manifest.json Source.md README.md
+          if git diff --cached --quiet; then
+            printf 'No output changes.\n'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Update filtered Surge rules' \
+            -m 'Co-Authored-By: Claude Code <noreply@anthropic.com>'
+          git push origin HEAD:filtered
