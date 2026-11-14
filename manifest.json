@@ -1,0 +1,33 @@
+{
+  "input_rule_count": 211573,
+  "output_rule_count": 211573,
+  "allowlist": [
+    "ad.zijieapi.com",
+    "polaris5-normal-hl.zijieapi.com"
+  ],
+  "matching_rules_per_host": {
+    "ad.zijieapi.com": 1,
+    "polaris5-normal-hl.zijieapi.com": 1
+  },
+  "changes": [
+    {
+      "original": "DOMAIN-SUFFIX,ad.zijieapi.com",
+      "replacement": "AND,((DOMAIN-SUFFIX,ad.zijieapi.com),(NOT,((DOMAIN,ad.zijieapi.com))))",
+      "excluded_hosts": [
+        "ad.zijieapi.com"
+      ]
+    },
+    {
+      "original": "DOMAIN-WILDCARD,polaris*-normal-*.zijieapi.com",
+      "replacement": "AND,((DOMAIN-WILDCARD,polaris*-normal-*.zijieapi.com),(NOT,((DOMAIN,polaris5-normal-hl.zijieapi.com))))",
+      "excluded_hosts": [
+        "polaris5-normal-hl.zijieapi.com"
+      ]
+    }
+  ],
+  "upstream_repository": "Cats-Team/AdRules",
+  "upstream_sha": "3b5da85c34dc727af2988ce37708568c24dfcdf2",
+  "source_sha": "8c604904ecebb155f889758f5a1a0b6dd97a632f",
+  "upstream_sha256": "cf6556698457e8a99c37e04086cb8a16d38cb28b092ddfc8e5cae86258ad8220",
+  "output_sha256": "b86fa1b7703b3dcd9dd1327bc40ebc99d6777bf49b1cd908f3f17b7bb6b7efb9"
+}
