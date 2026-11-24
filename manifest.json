@@ -1,6 +1,6 @@
 {
-  "input_rule_count": 211139,
-  "output_rule_count": 211139,
+  "input_rule_count": 214510,
+  "output_rule_count": 214510,
   "allowlist": [
     "ad.zijieapi.com",
     "polaris5-normal-hl.zijieapi.com"
@@ -26,8 +26,8 @@
     }
   ],
   "upstream_repository": "Cats-Team/AdRules",
-  "upstream_sha": "44ed60d08fefd50cee6446a4bafd72e9d6aea2b4",
+  "upstream_sha": "1f80afd82fd308637925725dd5fd27fe9953a19a",
   "source_sha": "8c604904ecebb155f889758f5a1a0b6dd97a632f",
-  "upstream_sha256": "1c716d5d850bfdfbd95cd7c7e12cd700536d5073e8b270b8c45696d1cf2a5738",
-  "output_sha256": "7497c2299e0be00ecd369918fc239ad4f00323e611171b37e8a45371a550c006"
+  "upstream_sha256": "8847f61df6fade6fb21a69b589c5340d611609797f2901b320903f84e15c841d",
+  "output_sha256": "f0ef6029401f614a995361cd15644db48e5dd86071441c7188451166c60fb7f5"
 }
